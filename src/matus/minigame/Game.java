@@ -4,6 +4,8 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
@@ -13,26 +15,37 @@ import javax.swing.JFrame;
  * Canvas do pacote awt.
  * 
  * Depois temos um looping infinito onde vai ser reinderizado 
- * o nosso jogo para isso usaremos o metodo Thread */
+ * o nosso jogo para isso usaremos o metodo Thread 
+ * 
+ * Utilizo tambem a interface KeyListener que vai implementar 
+ * os comandos para a implementação dos movimentos do player*/
 
-public class Game extends Canvas implements Runnable{
+public class Game extends Canvas implements Runnable,KeyListener{
 	
 	//tamanho da tela
 	public static int WIDTH = 480, HEIGHT = 480;
 	
+	//criando obijeto do tipo player
+	public Player player;
+	
 	//metodo construtor.
 	public Game() {
+		//adicionando movimentosdo player atraves do teclado
+		this.addKeyListener(this);
 		
 		//Com a classe setPreferredSize eu defino .
 		//a tela com o tamanho das variaveis anteriores.
 		this.setPreferredSize(new Dimension(WIDTH , HEIGHT));
+		
+		//instanciando classe Player dentro do game
+		player = new Player(0, 0);
 	}
 	
 	/*metodo onde acontece a logica da gameplay
 	 * cada loopin (fps) é um spin
 	 */
 	public void spin() {
-		
+		player.spin();
 	}
 	
 	//metodo onde será reinderizado os graficos do game
@@ -50,9 +63,7 @@ public class Game extends Canvas implements Runnable{
 		g.setColor(Color.green);
 		g.fillRect(0, 0,HEIGHT, WIDTH);
 		
-		//nosso primeiro retangulo
-		g.setColor(Color.blue);
-		g.fillRect(5, 5,25, 25);
+		player.render(g);
 		
 		bs.show();
 	}
@@ -96,4 +107,44 @@ public class Game extends Canvas implements Runnable{
 		
 	}
 	
-}
+	
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	 //objeto que iremos usar para atribuir o evento do teclado ao movimento
+	@Override
+	public void keyPressed(KeyEvent e) {//precionando a tecla
+		if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			player.right = true;
+		}else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+			player.left = true;
+		}
+		if(e.getKeyCode() == KeyEvent.VK_UP) {
+			player.up = true;
+		}else if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+			player.down = true;
+		}
+		
+	}
+
+
+	@Override
+	public void keyReleased(KeyEvent e) {//soltando a tecla
+		if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			player.right = false;
+		}else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+			player.left = false;
+		}
+		if(e.getKeyCode() == KeyEvent.VK_UP) {
+			player.up = false;
+		}else if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+			player.down = false;
+		}
+		
+	}
+		
+	}
+	
+
