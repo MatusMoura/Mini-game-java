@@ -16,6 +16,8 @@ public class Blocks extends Rectangle{
 	public void render (Graphics g) {
 		g.setColor(Color.GRAY);
 		g.fillRect(x, y, width, height);
+		g.setColor(Color.BLACK);
+		g.drawRect(x, y, width, height);//Borda dos blocos
 	}
 	
 }
